@@ -1,5 +1,10 @@
 # OpenStack Stein with Swift
 
+<p align="center">
+     <img src=https://github.com/lucadagati/openstack_stein_swift/blob/main/OpenStack-Logo-Horizontal.png>
+</p>
+
+
 This bash script installs the Stein version of OpenStack with keystone, glance, placement, nova, neutron, horizon, and Swift (with integrated virtualized drive) services. The script is an Ubuntu shell script and should be executed on an Ubuntu 18.04 LTS system.
 
 ## Prerequisites
@@ -13,7 +18,7 @@ This bash script installs the Stein version of OpenStack with keystone, glance, 
 
 To use the script, download and execute the source code by running the following commands:
 
-```console
+```bash
 git clone https://github.com/lucadagati/openstack_stein_swift.git
 cd openstack_stein_swift
 bash Stein_Installation.sh
