@@ -12,10 +12,11 @@ This bash script installs the Stein version of OpenStack with keystone, glance, 
 
 To use the script, download and execute the source code by running the following commands:
 
+```console
 git clone https://github.com/lucadagati/openstack_stein_swift.git
 cd openstack_stein_swift
 bash Stein_Installation.sh
-
+```
 
 ## Configuration
 
