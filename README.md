@@ -7,6 +7,7 @@ This bash script installs the Stein version of OpenStack with keystone, glance, 
 - Ubuntu 18.04 LTS system
 - Internet connection
 - Git installed
+- sudo
 
 ## Installation
 
