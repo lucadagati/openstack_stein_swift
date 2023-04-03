@@ -63,7 +63,7 @@ function configuring_db()
 
 #copy preconfig file
 cp ./conf_files/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-sed -i -e  "s/^\(bind-address\s*=\).*/\1 $ip/" /etc/mysql/mariadb.conf.d/50-server.cnf
+#sed -i -e  "s/^\(bind-address\s*=\).*/\1 $ip/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
 #Restart the database service
 service mysql restart
@@ -245,7 +245,7 @@ openstack endpoint create --region RegionOne image admin http://controller:9292
 su -s /bin/sh -c "glance-manage db_sync" glance
 
 #Restart the Image services
-service glance-registry restart
+#service glance-registry restart
 service glance-api restart
 
 sleep 10s
@@ -405,6 +405,11 @@ openstack endpoint create --region RegionOne network public http://controller:96
 openstack endpoint create --region RegionOne network internal http://controller:9696
 openstack endpoint create --region RegionOne network admin http://controller:9696
 
+#Update mariadb
+curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+curl -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+apt install -y mariadb-server
+
 #Populate the database
 su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
 
@@ -434,7 +439,7 @@ function horizon()
 #copy preconfig file
 cp ./conf_files/local_settings.py /etc/openstack-dashboard/local_settings.py
 cp ./conf_files/openstack-dashboard.conf /etc/apache2/conf-available/openstack-dashboard.conf
-sed -i -e  's/^\(OPENSTACK_HOST\s*=\).*/\1 "$ip"/' /etc/openstack-dashboard/local_settings.py
+sed -i -e  's/^\(OPENSTACK_HOST\s*=\).*/\1 '$ip'/' /etc/openstack-dashboard/local_settings.py
 sed -i -e  "s/^\(\s*'LOCATION'\s*:\).*/\1 '$ip:11211', /" /etc/openstack-dashboard/local_settings.py
 
 #Reload the web server configuration
@@ -468,7 +473,7 @@ openstack endpoint create --region RegionOne object-store internal http://$ip:80
 openstack endpoint create --region RegionOne object-store admin http://$ip:8080/v1
 chmod 777 /home
 dd if=/dev/zero of=/home/hdd.img bs=3M count=1200
-mkfs.xfs -f $object_storage_disk
+mkfs.xfs -f /home/$object_storage_disk
 mkdir -p /srv/node/$object_storage_disk
 echo "/home/$object_storage_disk /srv/node/$object_storage_disk xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab
 mount /srv/node/$object_storage_disk
@@ -566,6 +571,7 @@ neutron_db_password="NEUTRON_DBPASS"
 
 ip=$(ip route get 8.8.8.8 | awk 'NR == 1 {print $7; exit }')
 network_interface=$(ip route get 8.8.8.8 | awk 'NR == 1 {print $5 ; exit }')
+object_storage_disk="hdd.img";
 
 ####Getting Provider NIC name and IP Address ends #####
 
