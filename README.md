@@ -1,30 +1,32 @@
-# Author: Eranachandran
-Mail : eranachandrane@gmail.com
-# Website : http://pyronoidninja.com/
-Date : 24-07-2019
+# OpenStack Stein with Swift
 
-Description: This bash script will install the Stein version of OpenStack with the keystone,glance,placement,nova,neutron and Horizon Services
-
-Script type - Ubuntu Shell Script
+<p align="center">
+     <img src=https://github.com/lucadagati/openstack_stein_swift/blob/main/OpenStack-Logo-Horizontal.png>
+</p>
 
 
+This bash script installs the Stein version of OpenStack with keystone, glance, placement, nova, neutron, horizon, and Swift (with integrated virtualized drive) services. The script is an Ubuntu shell script and should be executed on an Ubuntu 18.04 LTS system.
 
+## Prerequisites
 
-# Bash-Script-for-OpenStack-Stein-Installation
-Bash Script for OpenStack Stein Installation
+- Ubuntu 18.04 LTS system
+- Internet connection
+- Git installed
+- sudo
 
-#Conf directory contains the preconfigured config files of the services. If you change the values of the variable in the bash script you should reflect the changes in preconfigured files. 
+## Installation
 
-#admin-openrc and demo-openrc contains preconfigured credentials if there are any changes in credentials, these files should be updated 
+To use the script, download and execute the source code by running the following commands:
 
-# Script Usage 
-
-Download and execute Source Code by as follows 
-
-git clone https://github.com/Eranachandran/Bash-Script-for-OpenStack-Stein-Installation.git
-
-cd Bash-Script-for-OpenStack-Stein-Installation
-
+```bash
+git clone https://github.com/lucadagati/openstack_stein_swift.git
+cd openstack_stein_swift
 bash Stein_Installation.sh
+```
 
-This Script is tested with Ubuntu 18.04 LTS
+## Configuration
+
+The "conf" directory contains preconfigured config files for the services. Any changes to the variables in the script should be reflected in these files. The "admin-openrc" and "demo-openrc" files contain preconfigured credentials and should be updated if necessary.
+
+## Note
+Please be aware that the script have been tested on an specific environment and that it is not guaranteed to work in all environments.
