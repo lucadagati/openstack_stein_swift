@@ -64,6 +64,8 @@ apt -y install openstack-dashboard
 function configuring_db()
 {
 
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$maria_db_root_password';"
+
 #copy preconfig file
 cp ./conf_files/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 #sed -i -e  "s/^\(bind-address\s*=\).*/\1 $ip/" /etc/mysql/mariadb.conf.d/50-server.cnf
