@@ -73,10 +73,10 @@ service mysql restart
 
 #####Delete anonymous users and  SET plugin = mysql_native_password starts######
 
-echo "UPDATE mysql.user SET Password=PASSWORD('$maria_db_root_password') WHERE User='root';" | $maria_db_connect
-echo "DELETE FROM mysql.user WHERE User='';" | $maria_db_connect
-echo "UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE User = 'root';" | $maria_db_connect
-echo "FLUSH PRIVILEGES;" | $maria_db_connect
+echo "UPDATE mysql.user SET Password=PASSWORD('$maria_db_root_password') WHERE User='root';" | mysql
+echo "DELETE FROM mysql.user WHERE User='';" | mysql
+echo "UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE User = 'root';" | mysql
+echo "FLUSH PRIVILEGES;" | mysql
 
 #####Delete anonymous users and  SET plugin = 'mysql_native_password' ends######
 
