@@ -143,11 +143,17 @@ chronyc sources
 
 function rabbitmq()
 {
+service rabbitmq-server start
+rabbitmq-plugins enable rabbitmq_management
+service rabbitmq-server restart
+
 #Add the openstack user
 rabbitmqctl add_user openstack RABBIT_PASS
+rabbitmqctl set_user_tags openstack administrator
 
 #Permit configuration, write, and read access for the openstack user
 rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+
 }
 
 function memcached()
