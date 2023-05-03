@@ -9,7 +9,7 @@ sed -i "/127.0.0.1/a$controller" /etc/hosts
 function install_stein_packages()
 {
 #install dependencies
-apt -y install curl
+apt -y install curl software-properties-common
 
 #NTP Installation
 apt -y install chrony
