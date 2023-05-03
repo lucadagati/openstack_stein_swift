@@ -442,7 +442,7 @@ function horizon()
 #copy preconfig file
 cp ./conf_files/local_settings.py /etc/openstack-dashboard/local_settings.py
 cp ./conf_files/openstack-dashboard.conf /etc/apache2/conf-available/openstack-dashboard.conf
-sed -i -e  's/^\(OPENSTACK_HOST\s*=\).*/\1 '$ip'/' /etc/openstack-dashboard/local_settings.py
+sed -i -e  "s/^\(OPENSTACK_HOST\s*=\).*/\1 '$ip'/" /etc/openstack-dashboard/local_settings.py
 sed -i -e  "s/^\(\s*'LOCATION'\s*:\).*/\1 '$ip:11211', /" /etc/openstack-dashboard/local_settings.py
 
 #Reload the web server configuration
@@ -456,15 +456,15 @@ mkdir -p /etc/swift
 cp ./conf_files/proxy-server.conf /etc/swift/proxy-server.conf
 cp ./conf_files/proxy-server.conf /etc/swift/internal-client.conf
 cp ./conf_files/rsyncd.conf /etc/rsyncd.conf
-sed -i -e  's/^\(address\s*=\).*/\1 '$ip'/' /etc/rsyncd.conf
+sed -i -e "s/^\(address\s*=\).*/\1 '$ip'/" /etc/rsyncd.conf
 sed -i -e 's/RSYNC_ENABLE=false/RSYNC_ENABLE=true/g' /etc/default/rsync
 service rsync start
 cp ./conf_files/account-server.conf /etc/swift/account-server.conf
-sed -i -e  's/^\(bind_ip\s*=\).*/\1 '$ip'/' /etc/swift/account-server.conf
+sed -i -e  "s/^\(bind_ip\s*=\).*/\1 '$ip'/" /etc/swift/account-server.conf
 cp ./conf_files/container-server.conf /etc/swift/container-server.conf
-sed -i -e  's/^\(bind_ip\s*=\).*/\1 '$ip'/' /etc/swift/container-server.conf
+sed -i -e  "s/^\(bind_ip\s*=\).*/\1 '$ip'/" /etc/swift/container-server.conf
 cp ./conf_files/object-server.conf /etc/swift/object-server.conf
-sed -i -e  's/^\(bind_ip\s*=\).*/\1 '$ip'/' /etc/swift/object-server.conf
+sed -i -e  "s/^\(bind_ip\s*=\).*/\1 '$ip'/" /etc/swift/object-server.conf
 cp ./conf_files/swift.conf /etc/swift/swift.conf
 
 . admin-openrc
