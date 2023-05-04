@@ -415,9 +415,18 @@ openstack endpoint create --region RegionOne network internal http://controller:
 openstack endpoint create --region RegionOne network admin http://controller:9696
 
 #Update mariadb
-curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
-curl -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
-apt install -y mariadb-server
+#curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+#curl -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+#apt install -y mariadb-server
+systemctl stop mariadb
+apt-get remove mariadb-server
+apt install wget
+wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+chmod +x mariadb_repo_setup
+./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
+apt update
+apt install mariadb-server mariadb-backup
+systemctl start mariadb
 
 #Populate the database
 su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
