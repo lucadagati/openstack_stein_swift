@@ -501,10 +501,10 @@ openstack endpoint create --region RegionOne object-store admin http://$ip:8080/
 #/srv/node/$object_storage_disk
 
 # Get the current user's home directory
-user_home=$(eval echo ~$USER)
+user_home=$(eval echo ~$SUDO_USER)
 
 # Check if a path was provided as an argument to the script
-if [ -z "$1" ]; then
+if [ -z "$object_storage_disk" ]; then
     # If no path was provided, use a default virtual disk in the user's home directory
     object_storage_disk="$user_home/hdd.img"
     # Create a virtual disk if it doesn't already exist
@@ -513,7 +513,7 @@ if [ -z "$1" ]; then
     fi
 else
     # If a path was provided, use that
-    object_storage_disk="$1"
+    object_storage_disk=object_storage_disk
 fi
 
 # Check if the disk already has a filesystem, if not, create one
