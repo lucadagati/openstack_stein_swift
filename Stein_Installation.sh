@@ -513,7 +513,7 @@ if [ -z "$object_storage_disk" ]; then
     fi
 else
     # If a path was provided, use that
-    object_storage_disk=object_storage_disk
+    object_storage_disk=$object_storage_disk
 fi
 
 # Check if the disk already has a filesystem, if not, create one
@@ -571,7 +571,7 @@ service memcached restart
 service swift-proxy restart
 swift-init all start
 
-cd "$current_path"
+#cd "$current_path"
 
 #Swift Verification
 . admin-openrc
