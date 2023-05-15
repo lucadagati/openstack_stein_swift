@@ -500,45 +500,38 @@ openstack endpoint create --region RegionOne object-store admin http://$ip:8080/
 #mount /srv/node/$object_storage_disk
 #/srv/node/$object_storage_disk
 
-# Get input parameter as hard disk path
-input_path=$1
-user_home="/home/$USER"  # Use $USER environment variable to get current user
-# Create a folder inside the user's home directory
-mkdir -p "$user_home/swift"
-# Set appropriate permissions for the folder
-chmod 700 "$user_home/swift"
-# Change the execution inside the folder
-cd "$user_home/swift"
-if [ -z "$input_path" ]; then
-    # Create disk image
-    dd if=/dev/zero of=hdd.img bs=3M count=1200
-    # Format the disk image with XFS file system
-    mkfs.xfs -f hdd.img
-    # Set the disk image path
-    disk_image_path="$user_home/swift/hdd.img"
-else
-    # Use the hard disk path passed as parameter
-    disk_image_path="$input_path"
-    # Unmount the disk if it's already mounted
-    sudo umount "$disk_image_path" 2>/dev/null
-    # Format the hard disk with XFS file system
-    echo "WARNING: This will erase all data on $disk_image_path. Proceed? (y/n)"
-    read response
-    if [ "$response" = "y" ]; then
-        sudo mkfs.xfs -f "$disk_image_path"
-    else
-        echo "Aborting"
-        exit 1
+# Get the current user's home directory
+user_home=$(eval echo ~$USER)
+
+# Check if a path was provided as an argument to the script
+if [ -z "$1" ]; then
+    # If no path was provided, use a default virtual disk in the user's home directory
+    object_storage_disk="$user_home/hdd.img"
+    # Create a virtual disk if it doesn't already exist
+    if [ ! -f "$object_storage_disk" ]; then
+        dd if=/dev/zero of="$object_storage_disk" bs=3M count=1200
     fi
+else
+    # If a path was provided, use that
+    object_storage_disk="$1"
 fi
-# Create the mount directory
-mkdir -p /srv/node/hdd
-# Mount the disk image in the mount directory
-mount -o loop "$disk_image_path" /srv/node/hdd
-# Add the entry in the /etc/fstab file for automatic mounting at startup
-echo "$disk_image_path /srv/node/hdd xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" | sudo tee -a /etc/fstab
-# Change the owner of the mount directory to the current user
-sudo chown -R $USER:$USER /srv/node/hdd
+
+# Check if the disk already has a filesystem, if not, create one
+if ! blkid | grep -q "$object_storage_disk"; then
+    mkfs.xfs -f "$object_storage_disk"
+fi
+
+# Create the mount point directory if it doesn't exist
+mount_point="/srv/node/$(basename "$object_storage_disk")"
+mkdir -p "$mount_point"
+
+# Check if the disk is already in fstab, if not, add it
+if ! grep -q "$object_storage_disk" /etc/fstab; then
+    echo "$object_storage_disk $mount_point xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab
+fi
+
+# Mount the disk
+mount "$mount_point"
 
 # Restart the rsync service
 service rsync start
