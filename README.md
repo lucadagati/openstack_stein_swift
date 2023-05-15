@@ -21,7 +21,15 @@ To use the script, download and execute the source code by running the following
 ```bash
 git clone https://github.com/lucadagati/openstack_stein_swift.git
 cd openstack_stein_swift
-bash Stein_Installation.sh
+# /path/to/hdd change the path with the drive path you want to use for swift
+# if to specified it will create a virtual hard drive
+sudo ./Stein_Installation.sh /path/to/hdd
+
+#note:
+#during the installation the script will ask:
+# *** 50-server.cnf (Y/I/N/O/D/Z) [default=N] ?
+# answer: N
+
 ```
 
 ## Configuration
