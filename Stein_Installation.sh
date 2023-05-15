@@ -424,8 +424,8 @@ apt install wget
 wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
 chmod +x mariadb_repo_setup
 ./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
-apt update
-apt install mariadb-server mariadb-backup
+apt update -y
+apt install -y mariadb-server mariadb-backup
 systemctl start mariadb
 
 #Populate the database
@@ -578,6 +578,8 @@ service memcached restart
 service swift-proxy restart
 swift-init all start
 
+cd "$current_path"
+
 #Swift Verification
 . admin-openrc
 swift stat
@@ -631,10 +633,11 @@ neutron_db_password="NEUTRON_DBPASS"
 
 ####Getting Provider NIC name and IP Address starts #####
 
+current_path=$(pwd)
 ip=$(ip route get 8.8.8.8 | awk 'NR == 1 {print $7; exit }')
 network_interface=$(ip route get 8.8.8.8 | awk 'NR == 1 {print $5 ; exit }')
 object_storage_disk=${1:-"hdd.img"};
-echo "Swift utilizzerà come configurazione du hdd: $object_storage_disk"
+echo "Swift will use as hdd: $object_storage_disk"
 
 ####Getting Provider NIC name and IP Address ends #####
 
@@ -651,7 +654,7 @@ glance
 placement
 nova
 neutron
-swift_install
 horizon
+swift_install
 
 #######OpenStack Stein Installation ends  ##############
